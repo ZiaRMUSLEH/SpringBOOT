@@ -39,4 +39,10 @@ public class StudentService {
         return student;
 
     }
+
+    public void deleteById (Long id) {
+        if (!repository.existsById(id)){
+            throw new ResourceNotFoundException("Couldn't find the student with id: "+id);
+        } repository.deleteById(id);
+    }
 }

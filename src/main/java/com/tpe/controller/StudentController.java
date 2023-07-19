@@ -51,7 +51,12 @@ public class StudentController {
 
     }
 
+    @DeleteMapping("/deleteById")
+    public ResponseEntity<String> deleteById(@RequestParam ("id")Long id ){
+        service.deleteById(id);
 
+        return ResponseEntity.ok("Student deleted Successfully");
+    }
     /*
     JSON EXAMPLE:
 
