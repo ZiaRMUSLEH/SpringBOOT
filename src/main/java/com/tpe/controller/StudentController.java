@@ -57,9 +57,6 @@ public class StudentController {
 
         return ResponseEntity.ok("Student deleted Successfully");
     }
-
-
-
     /*
     JSON EXAMPLE:
 
