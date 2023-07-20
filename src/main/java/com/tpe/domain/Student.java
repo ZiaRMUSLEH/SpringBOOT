@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "t_student")
+@Table(name = "t_student_rpt")
 @Getter
 @Setter
 @NoArgsConstructor      // Default Constructor

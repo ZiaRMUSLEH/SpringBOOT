@@ -60,59 +60,46 @@ public class StudentController {
     // https://instagram.com/profile/ABC      -->     PathVariable
 
     // Get a Student with their ID
-    @GetMapping("/{id}")        // http://localhost:8080/students/1
-    public ResponseEntity<Student> getStudentWithPathVariable(@PathVariable("id") Long id){
-
+    @GetMapping("/{id}")
+    public ResponseEntity<Student> getStudentByPathVariable(@PathVariable("id") Long id ){
         Student student = service.getStudentById(id);
-
         return ResponseEntity.ok(student);
-        //return ResponseEntity.ok(service.getStudentById(id));
-
     }
 
-    // Delete Student Using Their ID
-    @DeleteMapping("/{id}")     // http://localhost:8080/students/1
-    public ResponseEntity<Map<String, String>> deleteStudentById(@PathVariable Long id){
-
-        service.deleteStudent(id);
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String , String>> deleteByid (@PathVariable("id") Long id){
+        service.deleteById(id);
         Map<String, String> map = new HashMap<>();
-        map.put("message", "Student has been deleted successfully.");
-        map.put("success", "true");
-
-        return new ResponseEntity<>(map, HttpStatus.OK);
-
-    }
-
-    // Update a Student Using Their ID
-    @PutMapping("/{id}")        // http://localhost:8080/students/1
-    public ResponseEntity<Map<String, String>> updateStudent(@Valid @PathVariable("id") Long id, @RequestBody StudentDTO studentDTO){
-
-        service.updateStudent(id, studentDTO);
-
-        Map<String,String> map = new HashMap<>();
-        map.put("message", "Student has been updated successfully.");
-        map.put("success", "true");
-
+        map.put("message", "Student has been deleted successfully");
+        map.put("success","true");
         return ResponseEntity.ok(map);
-
     }
 
-    // Get All Students With Pageable
-    @GetMapping("/page")        // http://localhost:8080/students/page?page=1&size=2&sort=name&direction=ASC
-    public ResponseEntity<Page<Student>> getAllStudentsWithPage(@RequestParam("page") int page,
-                                                                @RequestParam("size") int size,
-                                                                @RequestParam("sort") String prop,      // sort
-                                                                @RequestParam("direction")Sort.Direction direction
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String , String>> updateByID (@Valid @PathVariable("id") Long id , @RequestBody StudentDTO studentDTO){
+        service.updateById(studentDTO,id);
+        Map<String, String> map = new HashMap<>();
+        map.put("message", "Student has been updated successfully");
+        map.put("success","true");
+        return ResponseEntity.ok(map);
+    }
+
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<Student>> getAllStudentsWihPage(@RequestParam ("page") int page,
+                                                               @RequestParam ("size") int size,
+                                                               @RequestParam ("sort") String pop,
+                                                               @RequestParam ("direction")Sort.Direction direction
     ){
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, prop));
-
+        Pageable pageable = PageRequest.of(page,size,Sort.by(direction,pop));
         Page<Student> pageOfStudents = service.getAllStudentsWithPage(pageable);
-
         return ResponseEntity.ok(pageOfStudents);
-
     }
+
+
+
+
+
 
     /*
     JSON EXAMPLE:
