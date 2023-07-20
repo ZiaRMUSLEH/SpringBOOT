@@ -42,53 +42,40 @@ public class StudentService {
 
     }
 
-    public void deleteStudent(Long id) {
-
-        Student student = getStudentById(id);
-
-        repository.delete(student);
-
+    public void deleteById (Long id) {
+        if(!repository.existsById(id)){
+            throw  new ResourceNotFoundException("couldn't find the student by this id: "+id);
+        }
+        repository.deleteById(id);
     }
 
-    public void updateStudent(Long id, StudentDTO studentDTO) {
 
-        /*
-            DATA THAT I ALREADY HAVE:       --> student.getEmail()
-                {
-                    "name":"Jace",
-                    "email": "abc@xyz.com"
-                }
 
-            DATA I WANT TO ADD NOW:         --> studentDTO.getEmail()
-                {
-                    "name":"JaceB",
-                    "email": "abc@xyz.com"
-                }
 
-         */
 
-        Student existingStudent = getStudentById(id);       // Student from my Database
 
-        boolean emailExists = repository.existsByEmail(studentDTO.getEmail());
+    public void updateById (StudentDTO studentDTO, Long id) {
+
+        Student existingStudent = getStudentById(id);
+
+        boolean isEmailExists = repository.existsByEmail(studentDTO.getEmail());
 
         boolean emailBelongsToTheSameStudent = studentDTO.getEmail().equals(existingStudent.getEmail());
 
-        if (emailExists && !emailBelongsToTheSameStudent){
+        if(isEmailExists && !emailBelongsToTheSameStudent){
             throw new ConflictException("Student with that email already exists: "+studentDTO.getEmail());
         }
-
         existingStudent.setName(studentDTO.getName());
         existingStudent.setLastName(studentDTO.getLastName());
         existingStudent.setGrade(studentDTO.getGrade());
         existingStudent.setEmail(studentDTO.getEmail());
         existingStudent.setPhoneNumber(studentDTO.getPhoneNumber());
 
-        repository.save(existingStudent);   // saveOrUpdate()
+        repository.save(existingStudent);
+
     }
 
-    public Page<Student> getAllStudentsWithPage(Pageable pageable) {
-
-        return repository.findAll(pageable);
-
+    public Page<Student> getAllStudentsWithPage (Pageable pageable) {
+       return repository.findAll(pageable);
     }
 }
