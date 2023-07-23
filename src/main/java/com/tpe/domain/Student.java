@@ -8,6 +8,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "t_student")
@@ -24,7 +26,7 @@ public class Student {          // pojo, entity
     private Long id;
 
     @NotNull(message = "First name cannot be null.")
-    @NotBlank(message = "First name cannot be white space")     // Jace, J
+    @NotBlank(message = "First name cannot be white space")     //  @NotNull, @NotEmpty
     @Size(min = 2, max = 25, message = "First name '${validatedValue}' cannot exceed those character limits: {min} and {max}")
     @Column(nullable = false, length = 25)
     private /*final*/ String name;
@@ -36,12 +38,15 @@ public class Student {          // pojo, entity
 
     @Email(message = "Provide a valid e-mail.")     // @, domain ext. (.com, .net, etc.)
     @Column(nullable = false, length = 55, unique = true)
-    private /*final*/ String email;       // hello, jaceEmail
+    private /*final*/ String email;       // hello, jaceEmail       -->     xyz@yyy.com
 
     private /*final*/ String phoneNumber;
 
     @Setter(AccessLevel.NONE)
     private LocalDateTime creationDate = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "student")
+    private List<Book> bookList = new ArrayList<>();
 
     // Constructor
 
@@ -50,6 +55,7 @@ public class Student {          // pojo, entity
     // Getter - Setter
 
 
+    // toString
     @Override
     public String toString() {
         return "Student{" +
