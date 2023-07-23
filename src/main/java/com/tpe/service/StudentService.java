@@ -97,4 +97,23 @@ public class StudentService {
         return repository.findStudentDTOById(id).orElseThrow(()-> new ResourceNotFoundException("Couldn't find the student with specified ID: "+id));
 
     }
+
+    public List<Student> getStudentsByLastName(String lastName) {
+
+        return repository.findAllByLastName(lastName);
+
+    }
+
+    public List<Student> getStudentsByGrade(Integer grade) {
+
+        return repository.findStudentsByGradeWithJPQL(grade);
+        //return repository.findStudentsByGradeWithSQL(grade);
+
+    }
+
+    public StudentDTO getStudentDTOById(Long id) {
+
+        return repository.findStudentDTOById(id).orElseThrow(()-> new ResourceNotFoundException("Couldn't find the student with specified ID: "+id));
+
+    }
 }
