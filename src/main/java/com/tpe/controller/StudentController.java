@@ -3,8 +3,6 @@ package com.tpe.controller;
 import com.tpe.domain.Student;
 import com.tpe.dto.StudentDTO;
 import com.tpe.service.StudentService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -23,8 +20,6 @@ import java.util.Map;
 @RestController // Using the Restful API
 @RequestMapping("/students")                // http://localhost:8080/students
 public class StudentController {
-
-    Logger logger = LoggerFactory.getLogger(StudentController.class);
 
     @Autowired
     private StudentService service;
@@ -52,7 +47,7 @@ public class StudentController {
     }
 
     // Get a Student with their ID
-    @GetMapping("/query")               // http://localhost:8080/students/query?id=1
+    @GetMapping("/query")               // http://localhost:8080/students/query?id=1&name=Jace
     public ResponseEntity<Student> getStudentWithRequestParam(@RequestParam("id") Long id){
 
         Student student = service.getStudentById(id);
@@ -65,7 +60,7 @@ public class StudentController {
     // https://instagram.com/profile/ABC      -->     PathVariable
 
     // Get a Student with their ID
-    @GetMapping("/{id}")        // http://localhost:8080/students/1     + GET
+    @GetMapping("/{id}")        // http://localhost:8080/students/1
     public ResponseEntity<Student> getStudentWithPathVariable(@PathVariable("id") Long id){
 
         Student student = service.getStudentById(id);
@@ -76,7 +71,7 @@ public class StudentController {
     }
 
     // Delete Student Using Their ID
-    @DeleteMapping("/{id}")     // http://localhost:8080/students/1     + DELETE
+    @DeleteMapping("/{id}")     // http://localhost:8080/students/1
     public ResponseEntity<Map<String, String>> deleteStudentById(@PathVariable Long id){
 
         service.deleteStudent(id);
@@ -119,7 +114,6 @@ public class StudentController {
 
     }
 
-
     /*
     JSON EXAMPLE:
 
@@ -131,51 +125,6 @@ public class StudentController {
             }
 
      */
-
-
-    // Get The Students By Their Last Name
-    @GetMapping("/queryLastName")       // http://localhost:8080/students/queryLastName?lastName=Abc
-    public ResponseEntity<List<Student>> getStudentByLastName(@RequestParam("lastName") String lastName){
-
-        List<Student> students = service.getStudentsByLastName(lastName);
-
-        return ResponseEntity.ok(students);
-
-    }
-
-    // Get the Student By Their Grade (JPQL ->  Java Persistence Query Language)
-    @GetMapping("/grade/{grade}")       // http://localhost:8080/students/grade/90
-    public ResponseEntity<List<Student>> getStudentsByGrade(@PathVariable("grade") Integer grade){
-
-        List<Student> students = service.getStudentsByGrade(grade);
-
-        return ResponseEntity.ok(students);
-
-    }
-
-    // Get a StudentDTO By ID, Do mapping inside the Repo
-    @GetMapping("/query/dto")       // http://localhost:8080/students/query/dto?
-    public ResponseEntity<StudentDTO> getStudentDTO(@RequestParam("id") Long id){
-
-        StudentDTO studentDTO = service.getStudentDTOById(id);
-
-        return ResponseEntity.ok(studentDTO);
-
-    }
-
-    // Logging
-    @GetMapping("/welcome") // http://localhost:8080/students/welcome
-    public String welcome(HttpServletRequest request){
-
-        logger.warn("--Welcome {}", request.getServletPath());
-
-        return "Welcome to the Student Controller";
-    }
-
-
-
-
-
 
 
 

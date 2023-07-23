@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "t_student")
+@Table(name = "t_student_rpt")
 @Getter
 @Setter
 @NoArgsConstructor      // Default Constructor
